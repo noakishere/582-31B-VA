@@ -109,3 +109,88 @@ finally: # finally do this (regardless of what happened)
 #                       if it works --> else            
 #                       if it doesnt work --> except(s)
 #                                                       --> finally
+
+# ================================================================================
+print("============")
+
+
+# Raising exceptions deliberately 
+
+# Programs should raise exceptions when they detec invalid situations. When that happens, we use raise.
+
+def set_age(age):
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+    return age
+
+# set_age(-5)
+
+def withdraw(balance, amount):
+    if amount > balance:
+        raise ValueError("Insufficient funds")
+    return balance - amount
+
+# withdraw(1000, 1100)
+
+# Python itself has many built-in exception types, it's up to us to use the one that matches our prob.
+
+
+# Common ones that we'll use are:
+# 
+# ValueError
+# ZeroDivisionError
+# KeyError
+# TypeError
+# IndexError
+
+
+# let's move on to exceptions in classes and invariants
+
+# Creating a custom exception
+class InvalidGPAError(Exception):
+    pass
+
+class ValidationError(Exception):
+    pass
+
+class StudentRecord:
+    def __init__(self, name, gpa):
+        # self.errors = []
+
+        if not name.strip():
+            raise ValueError("Name cannot be empty")
+            # self.errors.append("Name cannot be empty")
+        self.__name = name
+        self.gpa = gpa
+
+        # if self.errors:
+        #     raise ValidationError("\n".join(self.errors))
+
+    @property
+    def gpa(self):
+        return self.__gpa
+    
+    @gpa.setter
+    def gpa(self, value):
+        if not (0.0 <= value <= 4.0):
+            raise InvalidGPAError("GPA must be between 0.0 and 4.0") # Using our custom exception
+            # self.errors.append("GPA must be between 0.0 and 4.0") # Using our custom exception
+        self.__gpa = value
+        
+sr1 = StudentRecord("Test", 4)
+
+# this is exactly where exceptions become useful in object-oriented design:
+
+#   the class protects itself
+#   invalid states are rejected clearly
+#   callers must deal with the problem
+
+# try/catching here with the class
+try:
+    sr2 = StudentRecord("", 5.0)
+except InvalidGPAError as error:
+    print("Could not create student record: ", error)
+except ValueError as error:
+    print("Could not create student record: ", error)
+except ValidationError as error:
+    print(error)
