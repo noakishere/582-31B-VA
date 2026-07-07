@@ -10,7 +10,10 @@
 
     <ul>
       {% for team in teams %}
-      <li>{{team.name}} (Group {{team.group}})</li>
+      <li>
+        {{team.name}} (Group {{team.group}}) -
+        <a href="/team?name={{ team.name }}">View Team</a>
+      </li>
 
       {% endfor %}
     </ul>
