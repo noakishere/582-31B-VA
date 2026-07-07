@@ -3,8 +3,8 @@
 Pages:
 
 - home
+- about
 - movies
-- genres
 - movie detail
 
 Create:
@@ -24,7 +24,6 @@ Requirements:
 Expand on the previous exercise and :
 
 - every page should link back to home
-- the Genre page should link to individual single movie pages
 - the Movies page should link to individual single movie pages
 - the browser experience should feel like a mini-site, not disconnected pages
 
