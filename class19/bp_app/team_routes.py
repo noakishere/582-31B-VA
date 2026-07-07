@@ -18,3 +18,12 @@ def team_detail():
     # ex: /team?name=England
     team_name = request.args.get("name", "Unknown Team")
     return render_template("team.html", team_name= team_name)
+
+
+@teams.route("/search")
+def search():
+    group = request.args.get("group", "")
+    filtered = [team for team in WORLD_CUP_TEAMS if team["group"] == group] if group else WORLD_CUP_TEAMS
+
+    return render_template("search.html", teams= filtered, group= group)
+

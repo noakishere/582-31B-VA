@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>World Cup Team Search</h1>
+
+    <h2>Filter by Group</h2>
+
+    <p>
+      <a href="/search">All Teams</a>
+      <a href="/search?group=A">Group A</a>
+      <a href="/search?group=B">Group B</a>
+      <a href="/search?group=C">Group C</a>
+      <a href="/search?group=D">Group D</a>
+    </p>
+
+    {% if group %}
+    <p>Showing teams in <b>Group {{group}}</b></p>
+    {% else %}
+    <p>Showing all teams</p>
+    {% endif %}
+
+    <ul>
+      {% for team in teams %}
+      <li>{{team.name}} (Group {{team.group}})</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
