@@ -21,3 +21,13 @@ def home():
 
 
 
+# common mistakes to watch for:
+
+#   1. Never forget to register the blueprint!
+#   2. don't mix @app.route and @blueprint.route
+#   3. Dont forget the imports!!
+#   4. BLUEPRINTS ARE NOTTTT SEPARATE APPLICATIONS
+#       BPs are sections of one application!
+#       the app object ties everything together!
+
+
