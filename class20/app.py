@@ -45,6 +45,7 @@ with app.app_context():
 @app.route("/")
 def index():
     movies = Movie.query.all() # get all of the rows in the table
+    print(type(movies))
     return render_template("index.html", movies=movies)
 
 
@@ -61,13 +62,46 @@ def add_movie():
         movie = Movie(title=title, year=int(year), genre=genre)
 
         # add and commit the new entry to the database
-        db.session.add(movie)
-        db.session.commit()
+        db.session.add(movie) # this is the object that should be inserted
+        db.session.commit() # the transaction is finalized!
 
         # once it's done, go back to the index page
         return redirect(url_for("index"))
     
     return render_template("add_movie.html")
+
+@app.route("/edit/<int:movie_id>", methods=["GET", "POST"])
+def edit_movie(movie_id):
+    # we make a query to find the movie by id
+    movie = Movie.query.get_or_404(movie_id)
+
+    if request.method == "POST":
+        # change all of the fields to the form
+        movie.title = request.form["title"]
+        movie.year = int(request.form["year"])
+        movie.genre = request.form["genre"]
+
+        # update the database with the changes
+        db.session.commit()
+
+        return redirect(url_for("index"))
+    
+    return render_template("edit_movie.html", movie=movie)
+
+
+@app.route("/delete/<int:movie_id>")
+def delete_movie(movie_id):
+    # get the row
+    movie = Movie.query.get_or_404(movie_id)
+    
+    # delete the row
+    db.session.delete(movie)
+
+    #finalize transaction
+    db.session.commit()
+
+    # go back to main page
+    return redirect(url_for("index"))
 
 
 if __name__ == "__main__":

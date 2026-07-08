@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Edit Movie</h1>
+
+    <form method="POST">
+      <p>
+        <label>Title:</label>
+        <input type="text" name="title" value="{{ movie.title }}" required />
+      </p>
+
+      <p>
+        <label>Year:</label>
+        <input type="number" name="year" value="{{ movie.year }}" required />
+      </p>
+
+      <p>
+        <label>Genre:</label>
+        <input type="text" name="genre" value="{{ movie.genre }}" required />
+      </p>
+
+      <button type="submit">Update Movie</button>
+    </form>
+
+    <p><a href="{{ url_for('index') }}">Back to Movie List</a></p>
+  </body>
+</html>
