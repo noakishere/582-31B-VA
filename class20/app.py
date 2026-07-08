@@ -48,5 +48,27 @@ def index():
     return render_template("index.html", movies=movies)
 
 
+@app.route("/add", methods=["GET", "POST"])
+def add_movie():
+    # if the request from our form is POST:
+    if request.method == "POST":
+        # get the data from the form
+        title = request.form["title"]
+        year = request.form["year"]
+        genre = request.form["genre"]
+
+        # create the object of Model
+        movie = Movie(title=title, year=int(year), genre=genre)
+
+        # add and commit the new entry to the database
+        db.session.add(movie)
+        db.session.commit()
+
+        # once it's done, go back to the index page
+        return redirect(url_for("index"))
+    
+    return render_template("add_movie.html")
+
+
 if __name__ == "__main__":
     app.run(debug=True)

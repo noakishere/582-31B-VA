@@ -6,10 +6,19 @@
     <title>Document</title>
   </head>
   <body>
+    <h1>Movie Library</h1>
+
+    <p>
+      <a href="{{ url_for('add_movie') }}">Add a New Movie</a>
+    </p>
+
     {% if movies %}
     <ul>
       {% for movie in movies %}
-      <li>{{ movie.title }}</li>
+      <li>
+        <strong>{{ movie.title }}</strong>
+        ({{movie.year}}) - {{ movie.genre }}
+      </li>
       {% endfor %}
     </ul>
     {% else %}
