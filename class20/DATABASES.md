@@ -63,3 +63,43 @@ class Movie:
 id:int
 title: str
 year: int
+
+### GET vs POST
+
+#### GET
+
+What display the form!
+
+#### POST
+
+What processes the submitted form data.
+
+#### Request Flow
+
+1. browser vists /add (for example)
+2. Flask renders the form
+3. user submits the form (with the submit button)
+4. Flask reads the submitted fields from request.form
+5. Flask constructs a Movie(model) object (for example)
+6. Flask adds it to the session
+7. Flask commits it to the database.
+8. Flask redirects back to the homepage (or whatever you want to happen)
+
+## Some notes
+
+### Model definition
+
+The model class is not only a normal Python class. It is, in addition to that, a description of a database table.
+
+### add() and commit()
+
+- `add()` tells SQLAlchemy which new object should be inserted.
+- `commit()` finalizes the transaction (applies the changes to DB).
+
+### Persistance
+
+With a database, now browser actions change persistent data.
+
+## What is a session???
+
+The session is the ORM unit that tracks objects (python) and coordinates the transaction. SQLAlchemy docs emphasize that the session is stateful and _transaction-oriented_.
