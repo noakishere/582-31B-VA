@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block title %} Add Album {% endblock %} {% block
+content %}
+
+<h2>Add Album</h2>
+
+<form method="GET" action="{{ url_for('add_album') }}">
+  <p>
+    <label for="title">Title</label>
+
+    <input id="title" name="title" type="text" required />
+  </p>
+
+  <p>
+    <label for="artist">Artist</label>
+
+    <input id="artist" name="artist" type="text" required />
+  </p>
+
+  <p>
+    <label for="genre">Genre</label>
+
+    <select id="genre" name="genre" required>
+      <option value="">Choose a genre</option>
+      <option value="Electronic">Electronic</option>
+      <option value="Rock">Rock</option>
+      <option value="Hip-Hop">Hip-Hop</option>
+      <option value="Experimental">Experimental</option>
+    </select>
+  </p>
+
+  <p>
+    <label for="year">Year</label>
+
+    <input id="year" name="year" type="number" required />
+  </p>
+
+  <p>
+    <label for="stock">Stock</label>
+
+    <input id="stock" name="stock" type="number" min="0" required />
+  </p>
+
+  <button type="submit">Save Album</button>
+</form>
+
+<p>
+  <a href="{{ url_for('index') }}"> Cancel </a>
+</p>
+
+{% endblock %}

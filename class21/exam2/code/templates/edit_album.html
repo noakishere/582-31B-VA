@@ -1,0 +1,81 @@
+{% extends "base.html" %} {% block title %} Edit Album {% endblock %} {% block
+content %}
+
+<h2>Edit Album</h2>
+
+<form
+  method="POST"
+  action="{{ url_for(
+        'edit_album',
+        album_id=album.id
+    ) }}"
+>
+  <p>
+    <label for="title">Title</label>
+
+    <input
+      id="title"
+      name="title"
+      type="text"
+      value="{{ album.name }}"
+      required
+    />
+  </p>
+
+  <p>
+    <label for="artist">Artist</label>
+
+    <input
+      id="artist"
+      name="artist"
+      type="text"
+      value="{{ album.band }}"
+      required
+    />
+  </p>
+
+  <p>
+    <label for="genre">Genre</label>
+
+    <input
+      id="genre"
+      name="genre"
+      type="text"
+      value="{{ album.genre }}"
+      required
+    />
+  </p>
+
+  <p>
+    <label for="year">Year</label>
+
+    <input
+      id="year"
+      name="year"
+      type="number"
+      value="{{ album.year }}"
+      required
+    />
+  </p>
+
+  <p>
+    <label for="stock">Stock</label>
+
+    <input
+      id="stock"
+      name="quantity"
+      type="number"
+      min="0"
+      value="{{ album.stock }}"
+      required
+    />
+  </p>
+
+  <button type="submit">Update Album</button>
+</form>
+
+<p>
+  <a href="{{ url_for('index') }}"> Cancel </a>
+</p>
+
+{% endblock %}

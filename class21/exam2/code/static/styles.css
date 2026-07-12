@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f1ec;
+  color: #222;
+}
+
+.site-header {
+  padding: 1rem 2rem;
+  background: #202020;
+  color: white;
+}
+
+.site-header a {
+  margin-right: 1rem;
+  color: white;
+}
+
+.container {
+  width: min(1000px, 92%);
+  margin: 2rem auto;
+}
+
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.album-card {
+  padding: 1rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+form {
+  margin-block: 1rem;
+}
+
+input,
+select,
+button {
+  padding: 0.5rem;
+}

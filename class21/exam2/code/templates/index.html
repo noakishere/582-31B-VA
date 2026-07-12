@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block title %} Album Catalog {% endblock %} {%
+block content %}
+
+<h2>Albums</h2>
+
+<form method="GET" action="{{ url_for('index') }}">
+  <label for="genre"> Filter by genre </label>
+
+  <select id="genre" name="category">
+    <option value="">All genres</option>
+    <option value="Electronic">Electronic</option>
+    <option value="Rock">Rock</option>
+    <option value="Hip-Hop">Hip-Hop</option>
+    <option value="Experimental">Experimental</option>
+  </select>
+
+  <button type="submit">Filter</button>
+</form>
+
+<p>
+  <a href="{{ url_for('add_album') }}"> Add an album </a>
+</p>
+
+{% if album %}
+
+<div class="album-grid">
+  {% for item in albums %}
+
+  <article class="album-card">
+    <h3>{{ item.name }}</h3>
+
+    <p>
+      <strong>Artist:</strong>
+      {{ item.band }}
+    </p>
+
+    <p>
+      <strong>Genre:</strong>
+      {{ item.genre }}
+    </p>
+
+    <p>
+      <strong>Year:</strong>
+      {{ item.year }}
+    </p>
+
+    <p>
+      <strong>Stock:</strong>
+      {{ item.stock }}
+    </p>
+
+    <p>
+      <strong>Availability:</strong>
+
+      {% if item.in_stock() %} In stock {% else %} Sold out {% endif %}
+    </p>
+
+    <a
+      href="{{ url_for(
+                        'edit_album',
+                        id=item.id
+                    ) }}"
+    >
+      Edit
+    </a>
+
+    <a
+      href="{{ url_for(
+                        'delete_album',
+                        album_id=item.id
+                    ) }}"
+    >
+      Delete
+    </a>
+  </article>
+
+  {% endfor %}
+</div>
+
+{% else %}
+
+<p>No albums have been added.</p>
+
+{% endif %} {% endblock %}
