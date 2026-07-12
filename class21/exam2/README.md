@@ -774,6 +774,14 @@ Do not begin with the templates if Flask cannot start.
 
 Test the `/` route.
 
+Check:
+
+- the query
+- .all()
+- template variable names
+- model attribute names
+- property access
+
 ## Stage 3 — Test filtering
 
 Test:
