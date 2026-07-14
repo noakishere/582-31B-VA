@@ -113,7 +113,7 @@ def edit_album(album_id):
 
     if request.method == "POST":
         album.title = request.form["title"]
-        album.band = request.form["artist"]
+        album.artist = request.form["artist"]
         album.genre = request.form["genre"]
         album.year = request.form["year"]
         album.stock = request.form["amount"]
