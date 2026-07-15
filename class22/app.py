@@ -42,6 +42,7 @@ class Station(db.Model):
         return len(self.bikes)
     
     # available bikes!
+    @property
     def available_bike_count(self):
         sum = 0
 

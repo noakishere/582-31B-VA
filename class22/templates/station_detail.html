@@ -4,13 +4,23 @@ block content %}
 <h2>{{ station.name }}</h2>
 
 <p>
-  <strong>Neighbourhood:</strong>
-  {{ station.neighbourhood }}
+  <strong>Capacity:</strong>
+  {{ station.capacity }}
 </p>
 
 <p>
-  <strong>Capacity:</strong>
-  {{ station.capacity }}
+  <strong>Total bikes:</strong>
+  {{ station.bike_count }}
+</p>
+
+<p>
+  <strong>Available bikes:</strong>
+  {{ station.available_bike_count }}
+</p>
+
+<p>
+  <strong>Remaining spaces:</strong>
+  {{ station.remaining_capacity }}
 </p>
 
 <h3>Bikes</h3>
@@ -31,10 +41,36 @@ block content %}
   </p>
 
   <p>
-    <strong>Available:</strong>
-
-    {% if bike.is_available %} Yes {% else %} No {% endif %}
+    <strong>Status:</strong>
+    {% if bike.can_be_rented %} Ready to rent {% elif bike.needs_service %}
+    Maintenance Required {% else %} Currently rented {% endif %}
   </p>
+
+  {% if bike.can_be_rented %}
+
+  <form
+    method="POST"
+    action="{{ url_for(
+      'rent_bike',
+      bike_id=bike.id
+    ) }}"
+  >
+    <button type="submit">Rent</button>
+  </form>
+
+  {% elif not bike.is_available %}
+
+  <form
+    method="POST"
+    action="{{ url_for(
+      'return_bike',
+      bike_id=bike.id
+    ) }}"
+  >
+    <button type="submit">Return</button>
+  </form>
+
+  {% endif %}
 </article>
 
 {% endfor %} {% else %}
