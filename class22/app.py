@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://bikes.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///bikes.db"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -81,7 +81,63 @@ class Bike(db.Model):
         return (
             f"<Bike {self.id}: {self.bike_type}>"
         )
+
+# bidirectional relationship
+# Station.bikes <--> Bike.station
     
 
+# Define every model before calling db.create_all()!!!!
+with app.app_context():
+    db.create_all()
 
-# Station.bikes <--> Bike.station
+    downtown_station = Station(
+        name="Downtown Station",
+        capacity=4
+    )
+
+    bike_100 = Bike(
+        bike_type="Standard",
+        is_available=True,
+        distance_km=200
+    )
+
+    bike_101 = Bike(
+        bike_type="Electric",
+        is_available=True,
+        distance_km=800
+    )
+
+    bike_102 = Bike(
+        bike_type="Electric",
+        is_available=True,
+        distance_km=1000
+    )
+
+    # ^ These bikes dont have stations yet!!
+
+
+    # To connect:
+    # through relationships
+    # adds it to bikes, and with back_populate, also assigns the station field on the bike
+
+    # Option 1:
+    downtown_station.bikes.append(bike_100)
+    downtown_station.bikes.append(bike_101)
+
+    # Option 2:
+    bike_102.station = downtown_station
+
+    # We can see the objects!
+
+    # Let's not forget to add and commit!
+    db.session.add(downtown_station)
+    db.session.commit()
+
+    db.session.add(bike_100)
+    db.session.add(bike_101)
+    db.session.add(bike_102)
+
+    db.session.commit()
+
+    print(downtown_station.bikes)
+    print(bike_102.station)
