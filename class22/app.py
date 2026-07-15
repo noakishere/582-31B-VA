@@ -34,6 +34,39 @@ class Station(db.Model):
         "Bike",
         back_populates="station" #refers to Bike.station
     )
+
+    # DOMAIN LOGIC:
+
+    @property
+    def bike_count(self):
+        return len(self.bikes)
+    
+    # available bikes!
+    def available_bike_count(self):
+        sum = 0
+
+        for bike in self.bikes:
+            if bike.can_be_rented:
+                sum +=1
+
+        return sum
+    
+    @property
+    def remaining_capacity(self):
+        return self.capacity - self.bike_count
+    
+    @property
+    def has_space(self):
+        return self.remaining_capacity > 0 #True or False
+    
+    def add_bike(self, bike):
+        if not self.has_space:
+            return False
+        
+        self.bikes.append(bike) # relationship collection, we have to get a bike object
+        return True
+
+
     
     def __repr__(self):
         return (
