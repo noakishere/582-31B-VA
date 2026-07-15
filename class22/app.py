@@ -77,6 +77,36 @@ class Bike(db.Model):
         back_populates="bikes" #refers to the attribute on Station.bikes
     )
 
+    @property
+    def needs_service(self):
+        # boolean value
+        # value doesnt need to be stored, since it can be calculated
+        return self.distance_km >= 1000
+    
+    @property
+    def can_be_rented(self):
+        # another calculation
+        return (self.is_available and not self.needs_service)
+    
+    # rent
+    def rent(self):
+        if not self.can_be_rented:
+            return False
+        
+        self.is_available = False
+        return True
+    
+    def return_bike(self):
+        self.is_available = True
+
+    def record_ride(self, distance):
+        # Preventing zero or negative ride distances (error!)
+        if distance <= 0:
+            return False
+        
+        self.distance_km += distance
+        return True
+
     def __repr__(self):
         return (
             f"<Bike {self.id}: {self.bike_type}>"
