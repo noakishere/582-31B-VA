@@ -1,0 +1,38 @@
+{% extends "base.html" %} {% block title %} Stations {% endblock %} {% block
+content %}
+
+<h2>Bike Stations</h2>
+
+{% if stations %} {% for station in stations %}
+
+<article>
+  <h3>{{ station.name }}</h3>
+
+  <p>
+    <strong>Capacity:</strong>
+    {{ station.capacity }}
+  </p>
+
+  <p>
+    <strong>Total bikes:</strong>
+    <!-- station.bikes is the relationship collection! -->
+    <!-- |length is a Jinja method that filter counts the items -->
+    <!--                                            Python Equivalent: len(station.bikes) -->
+    {{ station.bikes|length }}
+  </p>
+
+  <a
+    href="{{ url_for(
+          'station_detail',
+          station_id=station.id
+        ) }}"
+  >
+    View station
+  </a>
+</article>
+
+{% endfor %} {% else %}
+
+<p>No stations are available.</p>
+
+{% endif %} {% endblock %}

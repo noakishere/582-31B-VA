@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block title %} {{ station.name }} {% endblock %} {%
+block content %}
+
+<h2>{{ station.name }}</h2>
+
+<p>
+  <strong>Neighbourhood:</strong>
+  {{ station.neighbourhood }}
+</p>
+
+<p>
+  <strong>Capacity:</strong>
+  {{ station.capacity }}
+</p>
+
+<h3>Bikes</h3>
+
+{% if station.bikes %} {% for bike in station.bikes %}
+
+<article>
+  <h4>{{ bike.id }}</h4>
+
+  <p>
+    <strong>Type:</strong>
+    {{ bike.bike_type }}
+  </p>
+
+  <p>
+    <strong>Distance:</strong>
+    {{ bike.distance_km }} km
+  </p>
+
+  <p>
+    <strong>Available:</strong>
+
+    {% if bike.is_available %} Yes {% else %} No {% endif %}
+  </p>
+</article>
+
+{% endfor %} {% else %}
+
+<p>This station has no bikes.</p>
+
+{% endif %}
+
+<p>
+  <a href="{{ url_for('stations') }}"> Back to stations </a>
+</p>
+
+{% endblock %}

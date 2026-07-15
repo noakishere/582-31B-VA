@@ -90,54 +90,71 @@ class Bike(db.Model):
 with app.app_context():
     db.create_all()
 
-    downtown_station = Station(
-        name="Downtown Station",
-        capacity=4
-    )
+    # downtown_station = Station(
+    #     name="Downtown Station",
+    #     capacity=4
+    # )
 
-    bike_100 = Bike(
-        bike_type="Standard",
-        is_available=True,
-        distance_km=200
-    )
+    # bike_100 = Bike(
+    #     bike_type="Standard",
+    #     is_available=True,
+    #     distance_km=200
+    # )
 
-    bike_101 = Bike(
-        bike_type="Electric",
-        is_available=True,
-        distance_km=800
-    )
+    # bike_101 = Bike(
+    #     bike_type="Electric",
+    #     is_available=True,
+    #     distance_km=800
+    # )
 
-    bike_102 = Bike(
-        bike_type="Electric",
-        is_available=True,
-        distance_km=1000
-    )
+    # bike_102 = Bike(
+    #     bike_type="Electric",
+    #     is_available=True,
+    #     distance_km=1000
+    # )
 
-    # ^ These bikes dont have stations yet!!
+    # # ^ These bikes dont have stations yet!!
 
 
-    # To connect:
-    # through relationships
-    # adds it to bikes, and with back_populate, also assigns the station field on the bike
+    # # To connect:
+    # # through relationships
+    # # adds it to bikes, and with back_populate, also assigns the station field on the bike
 
-    # Option 1:
-    downtown_station.bikes.append(bike_100)
-    downtown_station.bikes.append(bike_101)
+    # # Option 1:
+    # downtown_station.bikes.append(bike_100)
+    # downtown_station.bikes.append(bike_101)
 
-    # Option 2:
-    bike_102.station = downtown_station
+    # # Option 2:
+    # bike_102.station = downtown_station
 
-    # We can see the objects!
+    # # We can see the objects!
 
-    # Let's not forget to add and commit!
-    db.session.add(downtown_station)
-    db.session.commit()
+    # # Let's not forget to add and commit!
+    # db.session.add(downtown_station)
+    # db.session.commit()
 
-    db.session.add(bike_100)
-    db.session.add(bike_101)
-    db.session.add(bike_102)
+    # db.session.add(bike_100)
+    # db.session.add(bike_101)
+    # db.session.add(bike_102)
 
-    db.session.commit()
+    # db.session.commit()
 
-    print(downtown_station.bikes)
-    print(bike_102.station)
+    # print(downtown_station.bikes)
+    # print(bike_102.station)
+
+
+@app.route("/")
+def home():
+    return redirect(url_for("stations"))
+
+@app.route("/stations")
+def stations():
+    all_stations = Station.query.all()
+
+    return render_template("stations.html", stations=all_stations)
+
+@app.route("/stations/<int:station_id>")
+def station_detail(station_id):
+    station = Station.query.get_or_404(station_id)
+
+    return render_template("station_detail.html", station=station)
