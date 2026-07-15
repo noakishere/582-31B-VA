@@ -65,8 +65,6 @@ class Station(db.Model):
         
         self.bikes.append(bike) # relationship collection, we have to get a bike object
         return True
-
-
     
     def __repr__(self):
         return (
@@ -110,6 +108,8 @@ class Bike(db.Model):
         back_populates="bikes" #refers to the attribute on Station.bikes
     )
 
+    ## PROPERTIES
+
     @property
     def needs_service(self):
         # boolean value
@@ -121,6 +121,8 @@ class Bike(db.Model):
         # another calculation
         return (self.is_available and not self.needs_service)
     
+    ## METHODS
+
     # rent
     def rent(self):
         if not self.can_be_rented:
@@ -221,3 +223,22 @@ def station_detail(station_id):
     station = Station.query.get_or_404(station_id)
 
     return render_template("station_detail.html", station=station)
+
+@app.route("/bikes/<int:bike_id>/rent", methods=["POST"])
+def rent_bike(bike_id):
+    bike = Bike.query.get_or_404(bike_id)
+
+    # we use the method inside the Model Class!
+    if bike.rent():
+        db.session.commit()   #update the table
+
+    return redirect(url_for("station_detail", station_id=bike.station_id))
+
+@app.route("/bikes/<int:bike_id>/return", methods=["POST"])
+def return_bike(bike_id):
+    bike = Bike.query.get_or_404(bike_id)
+
+    bike.return_bike()
+    db.session.commit() #update the table
+
+    return redirect(url_for("station_detail", station_id=bike.station_id))
