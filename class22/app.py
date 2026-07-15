@@ -243,3 +243,38 @@ def return_bike(bike_id):
     db.session.commit() #update the table
 
     return redirect(url_for("station_detail", station_id=bike.station_id))
+
+@app.route("/bikes/add", methods=["GET", "POST"])
+def add_bike():
+    # query all our stations
+    stations = Station.query.all()
+
+    # make sure it's coming from a form with POST method
+    if request.method == "POST":
+        # get the station id
+        station_id = int(request.form["station_id"])
+
+        # query station
+        station = Station.query.get_or_404(station_id)
+
+        # create your Bike model
+        bike = Bike(
+            bike_type=request.form["bike_type"],
+            distance_km=float(request.form["distance_km"]),
+            is_available=True
+        )
+
+        # What if the station is full???
+        if not station.add_bike(bike):
+            return render_template(
+                "add_bike.html",
+                stations=stations,
+                error="The selected station is full"
+            )
+
+        db.session.add(bike) # add to db
+        db.session.commit() # commit to db
+
+        return redirect(url_for("station_detail", station_id=station.id))
+    
+    return render_template("add_bike.html", stations=stations)

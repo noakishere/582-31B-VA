@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block title %} Add Bike {% endblock %} {% block
+content %}
+
+<h2>Add Bike</h2>
+
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+
+<form method="POST" action="{{ url_for('add_bike') }}">
+  <p>
+    <label for="bike_type"> Bike type </label>
+
+    <select id="bike_type" name="bike_type" required>
+      <option value="">Select a type</option>
+
+      <option value="Standard">Standard</option>
+
+      <option value="Electric">Electric</option>
+
+      <option value="Cargo">Cargo</option>
+    </select>
+  </p>
+
+  <p>
+    <label for="distance_km"> Distance </label>
+
+    <input
+      id="distance_km"
+      name="distance_km"
+      type="number"
+      min="0"
+      step="0.1"
+      required
+    />
+  </p>
+
+  <p>
+    <label for="station_id"> Station </label>
+
+    <select id="station_id" name="station_id" required>
+      <option value="">Select a station</option>
+
+      {% for station in stations %}
+
+      <option value="{{ station.id }}">
+        {{ station.name }} — {{ station.remaining_capacity }} spaces remaining
+      </option>
+
+      {% endfor %}
+    </select>
+  </p>
+
+  <button type="submit">Add Bike</button>
+</form>
+
+{% endblock %}
