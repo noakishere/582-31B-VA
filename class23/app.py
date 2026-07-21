@@ -127,3 +127,39 @@ def register():
         return redirect(url_for("login"))
     
     return render_template("register.html")
+
+
+#### LOGIN!
+@app.route("/login,", methods=["GET", "POST"])
+def login():
+    # if authenticated, you can't login again!
+    if current_user.is_authenticated:
+        return redirect(url_for("dashboard"))
+    
+    if request.method == "POST":
+        username = request.form["username"].strip()
+        password = request.form["password"]
+
+        member = Member.query.filter_by(username=username).first()
+
+        # if no member is found, or the check password return false
+        if member is None or not member.check_password(password):
+            # why do we use one generic error?
+            # for the sake of security, we reveal as little information about the account as possible.
+            flash("Invalid username or password", "error")
+
+            return render_template("login.html", username=username)
+        
+        # if not! we're good to go
+        login_user(member)
+
+        flash("Your now logged in.", "success")
+
+        return redirect(url_for("dashboard"))
+    
+    return render_template("login.html")
+
+
+@app.route("/dashboard")
+def dashboard():
+    return "Dashboard"
