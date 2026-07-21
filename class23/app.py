@@ -130,7 +130,7 @@ def register():
 
 
 #### LOGIN!
-@app.route("/login,", methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     # if authenticated, you can't login again!
     if current_user.is_authenticated:
@@ -151,6 +151,10 @@ def login():
             return render_template("login.html", username=username)
         
         # if not! we're good to go
+        
+        # login_user does not store the entire object in the browser
+        # Flask-Login stores identifying session information.
+        # On later requests, the user loader retrieves the model object.
         login_user(member)
 
         flash("Your now logged in.", "success")
@@ -159,7 +163,39 @@ def login():
     
     return render_template("login.html")
 
+#### LOGOUT
+@app.route("/logout", methods=["POST"])
+@login_required
+def logout():
+    logout_user()
+    # after logout_user(), current_user.is_authenticated becomes false. (flag)
 
-@app.route("/dashboard")
+    flash("You have been logged out.", "success")
+
+    return redirect(url_for("home"))
+
+
+#### DASHBOARD
+# Always maintain this order:
+@app.route("/dashboard") #1
+@login_required #2
 def dashboard():
-    return "Dashboard"
+    workshops = [
+        {
+            "title": "Intro to Screen Printing",
+            "date": "August 8",
+            "spaces": 6,
+        },
+        {
+            "title": "Arduino for Beginners",
+            "date": "August 12",
+            "spaces": 3,
+        },
+        {
+            "title": "Woodworking Basics",
+            "date": "August 18",
+            "spaces": 0,
+        },
+    ]
+
+    return render_template("dashboard.html", workshops=workshops)

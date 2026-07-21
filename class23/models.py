@@ -38,5 +38,5 @@ class Member(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     #log
-    def __repr_(self):
+    def __repr__(self):
         return(f"<Member {self.id}: {self.username}")
