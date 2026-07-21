@@ -1,8 +1,10 @@
 import os
 from dotenv import load_dotenv
+
 from flask import (Flask, flash, redirect, render_template, request, url_for)
 from flask_login import (LoginManager, current_user, login_required, login_user, logout_user)
 
+from models import db, Member
 
 app = Flask(__name__)
 
@@ -14,10 +16,14 @@ app.config["SQLALCHEMY_DATABASE_URI"] = ("sqlite:///foundry.db")
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 # db
-
+db.init_app(app)
 
 # login
 login_manager = LoginManager()
 login_manager.login_view = "login"
 
 login_manager.init_app(app)
+
+with app.app_context():
+    # create the tables
+    db.create_all()
