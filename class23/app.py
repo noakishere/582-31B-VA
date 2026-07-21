@@ -199,3 +199,41 @@ def dashboard():
     ]
 
     return render_template("dashboard.html", workshops=workshops)
+
+
+#### ACCOUNT ROUTE
+@app.route("/account")
+@login_required
+def account():
+    # we don't have to make any queries here, because session gives us all the data that we need
+    return render_template("account.html")
+
+#### Changing Email
+@app.route("/account/email", methods=["POST"])
+@login_required
+def change_email():
+    email = request.form["email"].strip().lower()
+
+    if not email:
+        flash("Email is required!", "error")
+
+        return redirect(url_for("account"))
+    
+    # if the email already exists and doesn't belong to the logged in user
+    existing_member = Member.query.filter(Member.email == email, Member.id != current_user.id).first()
+
+    if existing_member:
+        flash("That email is already registered!", "error")
+
+        return redirect(url_for("account"))
+    
+    # if all good, update:
+    current_user.email = email
+
+    db.session.commit()
+
+    flash("Your email was updated.", "success")
+
+    return redirect(url_for("account"))
+
+    
