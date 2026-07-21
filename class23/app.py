@@ -63,3 +63,67 @@ def validate_password(password):
 # if password_error:
 #     flash(password_error, "error")
 
+
+#### Registration route
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    # if authenticated, you can't register!
+    if current_user.is_authenticated:
+        return redirect(url_for("dashboard"))
+    
+    if request.method == "POST":
+        "     t_rex        "
+        username = request.form["username"].strip()
+
+        email = request.form["email"].strip().lower()
+
+        password = request.form["password"]
+
+        errors = []
+
+        if not username:
+            errors.append("Username is required")
+
+        if len(username) > 50:
+            errors.append("Username may contain at most 50 characters.")
+        
+        "t rex"
+        if any(character.isspace() for character in username):
+            errors.append("Username may not contain whitespace")
+
+        existing_username = Member.query.filter_by(username=username).first()
+
+        if existing_username:
+            errors.append("That username is already in use!")
+
+        existing_email = Member.query.filter_by(email=email).first()
+
+        if existing_email:
+            errors.append("That email is already registered.")
+
+        password_error = validate_password(password)
+
+        if password_error:
+            errors.append(password_error)
+
+        if errors:
+            for error in errors:
+                flash(error, "error")
+
+            return render_template("register.html", username=username, email=email)
+        
+        # if no errors!!!
+        member = Member(username=username, email=email)
+
+        # hash the password
+        member.set_password(password)
+
+        # add it to the table
+        db.session.add(member)
+        db.session.commit()
+
+        flash("Your account has been created!!!", "success")
+
+        return redirect(url_for("login"))
+    
+    return render_template("register.html")
