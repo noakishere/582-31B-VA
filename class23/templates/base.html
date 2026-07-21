@@ -7,6 +7,16 @@
 
     <title>{% block title %} Foundry {% endblock %}</title>
 
+    <style>
+      .flash.error {
+        background-color: red;
+      }
+
+      .flash.success {
+        background-color: green;
+      }
+    </style>
+
     <link
       rel="stylesheet"
       href="{{ url_for(
