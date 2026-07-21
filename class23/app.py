@@ -237,3 +237,33 @@ def change_email():
     return redirect(url_for("account"))
 
     
+
+#### Changing password
+@app.route("/account/password", methods=["POST"])
+@login_required
+def change_password():
+    current_password = request.form["current_password"]
+
+    new_password = request.form["new_password"]
+
+    if not current_user.check_password(current_password):
+        flash("The current password is incorrect!", "error")
+
+        return redirect(url_for("account"))
+    
+    password_error = validate_password(new_password)
+
+    if password_error:
+        flash(password_error, "error")
+
+        return redirect(url_for("account"))
+    
+    # If there are no errors
+
+    current_user.set_password(new_password)
+
+    db.session.commit()
+
+    flash("Your password was updated.", "success")
+
+    return redirect(url_for("account"))
