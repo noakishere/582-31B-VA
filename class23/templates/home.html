@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block title %} Foundry {% endblock %} {% block
+content %}
+<h1>Community tools and workshops</h1>
+
+<p>Learn practical skills and reserve space in upcoming workshops.</p>
+
+{% if current_user.is_authenticated %}
+<p>Welcome back, {{ current_user.username }}.</p>
+{% else %}
+<p>Create an account to access member workshops.</p>
+{% endif %} {% endblock %}

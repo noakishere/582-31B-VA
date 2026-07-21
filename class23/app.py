@@ -267,3 +267,8 @@ def change_password():
     flash("Your password was updated.", "success")
 
     return redirect(url_for("account"))
+
+### Home route
+@app.route("/")
+def home():
+    return render_template("home.html")
